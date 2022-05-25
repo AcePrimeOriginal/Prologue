@@ -5,19 +5,27 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public float speed = 10;
-    private Rigidbody playerRb;
+    public float horizontalInput;
+    public float turnSpeed = 10;
+    public float forwardInput;
+    private Animator playerAnim;
 
     // Start is called before the first frame update
     void Start()
     {
-        playerRb = GetComponent<Rigidbody>();
+        playerAnim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        float forwardInput = Input.GetAxis("Vertical");
-        float rightInput = Input.GetAxis("Horizontal");
-        playerRb.AddForce(Vector3.forward * speed * forwardInput);
+        forwardInput = Input.GetAxis("Vertical");
+        horizontalInput = Input.GetAxis("Horizontal");
+
+
+        transform.Translate(Vector3.forward * Time.deltaTime * speed * forwardInput);
+        transform.Rotate(Vector3.up, turnSpeed * horizontalInput * Time.deltaTime);
+
+        playerAnim.SetTrigger("Jump_trig");
     }
 }
